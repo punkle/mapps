@@ -1,0 +1,23 @@
+{
+    "name": "mapps",
+    "version": "0.2.0",
+    "description": "Meshtastic app runtime framework — .mapp packaging, signing, verification, and Berry VM hosting",
+    "keywords": "meshtastic, mapp, signing, ed25519, berry, runtime",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/meshtastic/mapps"
+    },
+    "build": {
+        "srcDir": "src",
+        "includeDir": "include",
+        "flags": ["-Isrc"],
+        "srcFilter": ["+<*>", "-<../cli/>", "-<../test/>"],
+        "extraScript": "bin/configure_berry.py"
+    },
+    "dependencies": {
+        "rweather/Crypto": "^0.4.0",
+        "berry": "https://github.com/berry-lang/berry/archive/7af8289b95e937e22a553c1688b563841c53247b.zip"
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
