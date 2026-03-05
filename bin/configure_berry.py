@@ -80,6 +80,17 @@ def run_coc(berry_dir, conf_path):
     print(f"  [Berry] Generated constant tables in {generate_dir}")
 
 
+# Add compat/ to the include path only on native (non-Arduino) builds so
+# rweather/Crypto can find the Arduino.h stub.  On Arduino targets the real
+# header is provided by the framework.  Keeping the stub out of include/
+# avoids polluting the public include path (which causes cppcheck to pick up
+# the stub's type definitions and flag pre-existing code across the project).
+_this_file = os.path.abspath(inspect.currentframe().f_code.co_filename)
+_mapps_root = os.path.dirname(os.path.dirname(_this_file))
+_compat_dir = os.path.join(_mapps_root, "compat")
+if os.path.isdir(_compat_dir) and env.get("PIOPLATFORM") == "native":
+    env.Append(CPPPATH=[_compat_dir])
+
 berry_dir = find_berry_libdeps_dir(env)
 if berry_dir:
     lib_json_path = os.path.join(berry_dir, "library.json")
